@@ -1607,6 +1607,7 @@
                                     Bill No: <span id="receipt-print-bill-no">000</span><br>
                                     Date: <span id="receipt-print-date"></span><br>
                                     Pay Mode: <span id="receipt-print-pay-mode">Cash</span><br>
+                                    Operator: <span id="receipt-print-operator">Staff</span><br>
                                     Cust: <span id="receipt-print-cust-name">-</span>
                                 </p>
                                 <div class="print-receipt-divider"></div>
@@ -3050,7 +3051,8 @@
                 grandTotal: grandTotal,
                 paymentMode: paymentMode,
                 customerName: customerName || null,
-                customerPhone: customerPhone || null
+                customerPhone: customerPhone || null,
+                operator: loginSession.role
             };
 
             // Save to bills ledger
@@ -3073,6 +3075,7 @@
                 document.getElementById('receipt-print-date').textContent = new Date(bill.date).toLocaleString();
                 document.getElementById('receipt-print-pay-mode').textContent = bill.paymentMode.toUpperCase();
                 document.getElementById('receipt-print-cust-name').textContent = customerName || 'Walk-in Customer';
+                document.getElementById('receipt-print-operator').textContent = (bill.operator || 'Staff').toUpperCase();
 
                 // We print using native browser window.print() after minor CSS modifications
                 setTimeout(() => {
@@ -3124,7 +3127,7 @@
                 type: 'purchase',
                 amount: amount,
                 billId: billId,
-                notes: `Purchased Credit bill ref: ${billId.slice(-6)}`
+                notes: `Purchased Credit bill ref: ${billId.slice(-6)} (by ${loginSession.role})`
             });
 
             saveCustomers();
@@ -3150,7 +3153,7 @@
                 type: 'cash_purchase',
                 amount: amount,
                 billId: billId,
-                notes: `Cash purchase bill ref: ${billId.slice(-6)}`
+                notes: `Cash purchase bill ref: ${billId.slice(-6)} (by ${loginSession.role})`
             });
 
             saveCustomers();
