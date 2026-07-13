@@ -1927,22 +1927,22 @@
             { id: "3", name: "Potato", localName: "ഉരുളക്കിഴങ്ങ് (Urulakkizhang)", category: "Root", unit: "kg", price: 35, emoji: "🥔" },
             { id: "4", name: "Carrot", localName: "കാരറ്റ് (Carrot)", category: "Root", unit: "kg", price: 60, emoji: "🥕" },
             { id: "5", name: "Cabbage", localName: "കാബേജ് (Cabbage)", category: "Leafy", unit: "kg", price: 30, emoji: "🥬" },
-            { id: "6", name: "Ginger", localName: "ഇഞ്ചി (Inchi)", category: "Root", unit: "kg", price: 120, emoji: "🍠" },
+            { id: "6", name: "Ginger", localName: "ഇഞ്ചി (Inchi)", category: "Root", unit: "kg", price: 120, emoji: "🥜" },
             { id: "7", name: "Garlic", localName: "വെളുത്തുള്ളി (Veluthulli)", category: "Spices", unit: "kg", price: 160, emoji: "🧄" },
             { id: "8", name: "Green Chili", localName: "പച്ചമുളക് (Pachamulag)", category: "Spices", unit: "kg", price: 80, emoji: "🌶️" },
             { id: "9", name: "Coriander Bundle", localName: "മല്ലിയില (Malliyila)", category: "Leafy", unit: "bundle", price: 15, emoji: "🌿" },
-            { id: "10", name: "Ladies Finger / Okra", localName: "വെണ്ടയ്ക്ക (Vendakka)", category: "Fruits", unit: "kg", price: 45, emoji: "🥒" },
+            { id: "10", name: "Ladies Finger / Okra", localName: "വെണ്ടയ്ക്ക (Vendakka)", category: "Fruits", unit: "kg", price: 45, emoji: "🎋" },
             { id: "11", name: "Brinjal", localName: "വഴുതനങ്ങ (Vazhuthananga)", category: "Fruits", unit: "kg", price: 40, emoji: "🍆" },
             { id: "12", name: "Lemon", localName: "ചെറുനാരങ്ങ (Cherunaranga)", category: "Fruits", unit: "piece", price: 5, emoji: "🍋" },
             { id: "13", name: "Coconut", localName: "തേങ്ങ (Thenga)", category: "Fruits", unit: "piece", price: 30, emoji: "🥥" },
             { id: "14", name: "Cucumber", localName: "വെള്ളരിക്ക (Vellarikka)", category: "Fruits", unit: "kg", price: 35, emoji: "🥒" },
-            { id: "15", name: "Bitter Gourd", localName: "പാവയ്ക്ക (Pavakka)", category: "Fruits", unit: "kg", price: 50, emoji: "🥒" },
+            { id: "15", name: "Bitter Gourd", localName: "പാവയ്ക്ക (Pavakka)", category: "Fruits", unit: "kg", price: 50, emoji: "🍈" },
             { id: "16", name: "Cauliflower", localName: "കോളിഫ്ലവർ (Cauliflower)", category: "Leafy", unit: "piece", price: 40, emoji: "🥦" },
             { id: "17", name: "Curry Leaves Bundle", localName: "കറിവേപ്പില (Kariveppila)", category: "Leafy", unit: "bundle", price: 5, emoji: "🌿" },
             { id: "18", name: "Mint Leaves Bundle", localName: "പുതിനയില (Puthinayila)", category: "Leafy", unit: "bundle", price: 10, emoji: "🌱" },
             { id: "19", name: "Tapioca", localName: "കപ്പ (Kappa)", category: "Root", unit: "kg", price: 32, emoji: "🍠" },
             { id: "20", name: "Pumpkin", localName: "മത്തങ്ങ (Mathanga)", category: "Fruits", unit: "kg", price: 26, emoji: "🎃" },
-            { id: "21", name: "Beetroot", localName: "ബീറ്റ്റൂട്ട് (Beetroot)", category: "Root", unit: "kg", price: 45, emoji: "🍠" },
+            { id: "21", name: "Beetroot", localName: "ബീറ്റ്റൂട്ട് (Beetroot)", category: "Root", unit: "kg", price: 45, emoji: "🍒" },
             { id: "22", name: "Mushroom", localName: "കൂൺ (Koon)", category: "Other", unit: "piece", price: 45, emoji: "🍄" }
         ];
 
@@ -1999,17 +1999,18 @@
             if (lowerName.includes("potato")) return "🥔";
             if (lowerName.includes("carrot")) return "🥕";
             if (lowerName.includes("cabbage") || lowerName.includes("spinach") || lowerName.includes("leaf")) return "🥬";
-            if (lowerName.includes("ginger")) return "🍠";
+            if (lowerName.includes("ginger")) return "🥜";
             if (lowerName.includes("garlic")) return "🧄";
             if (lowerName.includes("chili") || lowerName.includes("chilly") || lowerName.includes("pepper")) return "🌶️";
             if (lowerName.includes("coriander") || lowerName.includes("mint") || lowerName.includes("herb")) return "🌿";
-            if (lowerName.includes("okra") || lowerName.includes("ladies finger") || lowerName.includes("pea") || lowerName.includes("bean")) return "🥒";
+            if (lowerName.includes("okra") || lowerName.includes("ladies finger") || lowerName.includes("pea") || lowerName.includes("bean")) return "🎋";
             if (lowerName.includes("brinjal") || lowerName.includes("eggplant")) return "🍆";
             if (lowerName.includes("lemon") || lowerName.includes("lime")) return "🍋";
             if (lowerName.includes("coconut")) return "🥥";
             if (lowerName.includes("pumpkin")) return "🎃";
             if (lowerName.includes("cauliflower")) return "🥦";
-            if (lowerName.includes("beetroot")) return "🍠";
+            if (lowerName.includes("bitter gourd")) return "🍈";
+            if (lowerName.includes("beetroot")) return "🍒";
             if (lowerName.includes("mushroom")) return "🍄";
             if (lowerName.includes("cucumber")) return "🥒";
             
@@ -2061,11 +2062,35 @@
 
                 if (storedProducts) {
                     state.products = JSON.parse(storedProducts);
-                    // Database migration: replace incompatible Unicode 15 emojis (🫚, 🫛) with highly compatible fallbacks
+                    // Database migration: assign correct, distinct compatible emojis by checking product names
                     let migrated = false;
                     state.products.forEach(p => {
-                        if (p.emoji === "🫚") { p.emoji = "🍠"; migrated = true; }
-                        if (p.emoji === "🫛") { p.emoji = "🥒"; migrated = true; }
+                        const nameLower = p.name.toLowerCase();
+                        
+                        // Fix Ginger
+                        if (nameLower.includes("ginger") && (p.emoji === "🍠" || p.emoji === "🫚")) {
+                            p.emoji = "🥜";
+                            migrated = true;
+                        }
+                        // Fix Beetroot
+                        if (nameLower.includes("beetroot") && p.emoji === "🍠") {
+                            p.emoji = "🍒";
+                            migrated = true;
+                        }
+                        // Fix Ladies Finger / Okra
+                        if ((nameLower.includes("ladies finger") || nameLower.includes("okra")) && (p.emoji === "🥒" || p.emoji === "🫛")) {
+                            p.emoji = "🎋";
+                            migrated = true;
+                        }
+                        // Fix Bitter Gourd
+                        if (nameLower.includes("bitter gourd") && p.emoji === "🥒") {
+                            p.emoji = "🍈";
+                            migrated = true;
+                        }
+                        
+                        // Basic incompatible catch-all
+                        if (p.emoji === "🫚") { p.emoji = "🥜"; migrated = true; }
+                        if (p.emoji === "🫛") { p.emoji = "🎋"; migrated = true; }
                     });
                     if (migrated) saveProducts();
                 } else {
