@@ -1286,6 +1286,172 @@
         .print-only {
             display: none;
         }
+
+        /* App Login Screen Overlay */
+        .login-screen-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: radial-gradient(circle at top, #064e3b 0%, #0f172a 100%);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 99999;
+            padding: 16px;
+        }
+        .login-screen-overlay.active {
+            display: flex;
+        }
+        .login-container {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: var(--radius-xl);
+            width: 100%;
+            max-width: 380px;
+            padding: 40px 28px;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        .login-brand {
+            margin-bottom: 24px;
+        }
+        .login-logo {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            width: 60px;
+            height: 60px;
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px auto;
+            box-shadow: 0 8px 24px rgba(16, 185, 129, 0.4);
+            color: #ffffff;
+        }
+        .login-brand h2 {
+            color: #ffffff;
+            font-size: 26px;
+            font-weight: 800;
+            margin-bottom: 6px;
+            font-family: var(--font-display);
+        }
+        .login-brand p {
+            color: #94a3b8;
+            font-size: 13px;
+            font-weight: 500;
+        }
+        .login-role-tabs {
+            display: flex;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius-lg);
+            padding: 4px;
+            width: 100%;
+            margin-bottom: 24px;
+        }
+        .role-tab {
+            flex: 1;
+            background: none;
+            border: none;
+            color: #94a3b8;
+            padding: 12px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: var(--transition-fast);
+        }
+        .role-tab.active {
+            background-color: var(--primary);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+        }
+        .login-pin-display {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 24px;
+            width: 100%;
+        }
+        .login-pin-dots {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 12px;
+        }
+        .login-pin-dots div {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            background-color: transparent;
+            transition: var(--transition-fast);
+        }
+        .login-pin-dots div.filled {
+            background-color: var(--primary);
+            border-color: var(--primary);
+            box-shadow: 0 0 8px var(--primary);
+        }
+        .login-error-msg {
+            color: var(--danger);
+            font-size: 12px;
+            font-weight: 700;
+            min-height: 18px;
+            opacity: 0;
+            transition: opacity 0.15s ease;
+        }
+        .login-keypad {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            width: 100%;
+            max-width: 260px;
+            margin: 0 auto;
+        }
+        .login-keypad-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.02);
+            color: #ffffff;
+            font-size: 20px;
+            font-weight: 700;
+            height: 52px;
+            border-radius: 50%;
+            width: 52px;
+            margin: 0 auto;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition-fast);
+        }
+        .login-keypad-btn:hover {
+            background: rgba(255, 255, 255, 0.12);
+        }
+        .login-keypad-btn:active {
+            transform: scale(0.9);
+        }
+        .login-keypad-btn.action-btn {
+            font-size: 12px;
+            font-weight: 600;
+            color: #94a3b8;
+            border-radius: var(--radius-md);
+            width: auto;
+            height: 52px;
+            background: none;
+            border: none;
+        }
+        .login-keypad-btn.action-btn:hover {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.05);
+        }
     </style>
 </head>
 <body>
@@ -1317,8 +1483,11 @@
                     </li>
                 </ul>
             </div>
-            <div class="sidebar-footer">
-                AK Vegetables v1.0.0
+            <div class="sidebar-footer" style="display: flex; flex-direction: column; gap: 8px;">
+                <button class="btn btn-secondary" onclick="logOutApp()" style="width: 100%; border-color: rgba(255,255,255,0.08); background: rgba(255,255,255,0.04); color: var(--danger); font-size: 12px; font-weight: 700; padding: 8px 10px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; gap: 6px;">
+                    <i data-lucide="log-out" style="width: 14px; height: 14px;"></i> Lock Session
+                </button>
+                <div style="font-size: 10px; opacity: 0.5; text-align: center;">AK Vegetables v1.0.0</div>
             </div>
         </aside>
 
@@ -1348,6 +1517,9 @@
                     <h2 id="header-title">Billing Desk</h2>
                 </div>
                 <div class="header-meta">
+                    <button class="btn btn-secondary" id="app-lock-session-btn" style="padding: 8px 12px; border-radius: var(--radius-lg); font-size: 13px; display: inline-flex; gap: 6px; align-items: center;" title="Lock Billing App" onclick="logOutApp()">
+                        <i data-lucide="log-out" style="color: var(--danger); font-size: 16px;"></i> Lock Screen
+                    </button>
                     <button class="btn btn-secondary" id="admin-lock-session-btn" style="padding: 8px 12px; border-radius: var(--radius-lg); font-size: 13px; display: none;" title="Lock Admin Panels">
                         <i data-lucide="unlock" style="color: var(--primary); font-size: 16px;"></i> Admin Unlocked
                     </button>
@@ -1662,11 +1834,19 @@
                                     <i data-lucide="lock" style="color: var(--primary); font-size: 18px;"></i> Admin Access Settings
                                 </h4>
                                 <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 14px;">
-                                    <input type="checkbox" id="setting-admin-lock-enabled" style="width: 18px; height: 18px; cursor: pointer;">
-                                    <label for="setting-admin-lock-enabled" style="font-size: 13px; font-weight: 600; color: var(--text-muted); cursor: pointer;">Enable Admin Passcode (PIN)</label>
+                                    <input type="checkbox" id="setting-login-enabled" style="width: 18px; height: 18px; cursor: pointer;">
+                                    <label for="setting-login-enabled" style="font-size: 13px; font-weight: 600; color: var(--text-muted); cursor: pointer;">Enable Login Screen on Startup</label>
                                 </div>
-                                <div class="form-group" id="setting-admin-pin-group" style="display: none;">
-                                    <label for="setting-admin-pin">Admin Passcode (4-digit numeric PIN)</label>
+                                <div class="form-group" id="setting-staff-pin-group" style="display: none; margin-bottom: 14px;">
+                                    <label for="setting-staff-pin">Staff Passcode (4-digit numeric PIN)</label>
+                                    <input type="password" id="setting-staff-pin" class="form-control" placeholder="e.g., 5555" maxlength="4" style="width: 120px; text-align: center; letter-spacing: 4px; font-size: 16px; font-weight: 700;">
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 14px;">
+                                    <input type="checkbox" id="setting-admin-lock-enabled" style="width: 18px; height: 18px; cursor: pointer;">
+                                    <label for="setting-admin-lock-enabled" style="font-size: 13px; font-weight: 600; color: var(--text-muted); cursor: pointer;">Enable Admin Panel Passcode (PIN)</label>
+                                </div>
+                                <div class="form-group" id="setting-admin-pin-group" style="display: none; margin-bottom: 14px;">
+                                    <label for="setting-admin-pin">Admin/Owner Passcode (4-digit numeric PIN)</label>
                                     <input type="password" id="setting-admin-pin" class="form-control" placeholder="e.g., 1234" maxlength="4" style="width: 120px; text-align: center; letter-spacing: 4px; font-size: 16px; font-weight: 700;">
                                 </div>
                             </div>
@@ -1901,6 +2081,56 @@
         </div>
     </div>
 
+    <!-- Full-screen Application Login Gate -->
+    <div id="app-login-screen" class="login-screen-overlay">
+        <div class="login-container">
+            <div class="login-brand">
+                <div class="login-logo">
+                    <i data-lucide="store" style="width: 32px; height: 32px;"></i>
+                </div>
+                <h2>AK Vegetables</h2>
+                <p>Billing & Ledger Management</p>
+            </div>
+            
+            <div class="login-role-tabs">
+                <button class="role-tab active" id="login-role-staff" onclick="setLoginRole('staff')">
+                    <i data-lucide="user"></i> Staff Login
+                </button>
+                <button class="role-tab" id="login-role-owner" onclick="setLoginRole('owner')">
+                    <i data-lucide="shield-alert"></i> Owner Login
+                </button>
+            </div>
+            
+            <div class="login-pin-display">
+                <div class="login-pin-dots" id="login-pin-dots">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+                <div class="login-error-msg" id="login-error-msg">Incorrect PIN!</div>
+            </div>
+            
+            <div class="login-keypad">
+                <button class="login-keypad-btn" onclick="inputLoginPin('1')">1</button>
+                <button class="login-keypad-btn" onclick="inputLoginPin('2')">2</button>
+                <button class="login-keypad-btn" onclick="inputLoginPin('3')">3</button>
+                
+                <button class="login-keypad-btn" onclick="inputLoginPin('4')">4</button>
+                <button class="login-keypad-btn" onclick="inputLoginPin('5')">5</button>
+                <button class="login-keypad-btn" onclick="inputLoginPin('6')">6</button>
+                
+                <button class="login-keypad-btn" onclick="inputLoginPin('7')">7</button>
+                <button class="login-keypad-btn" onclick="inputLoginPin('8')">8</button>
+                <button class="login-keypad-btn" onclick="inputLoginPin('9')">9</button>
+                
+                <button class="login-keypad-btn action-btn" onclick="clearLoginPin()">Clear</button>
+                <button class="login-keypad-btn" onclick="inputLoginPin('0')">0</button>
+                <button class="login-keypad-btn action-btn" onclick="verifyLoginPin()">Enter</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Notification Toast Container -->
     <div class="toast-container" id="toast-box"></div>
 
@@ -2033,6 +2263,7 @@
             renderKhataList();
             renderReports();
             setupSettingsForm();
+            checkAppLoginState();
 
             // Enable horizontal drag to scroll with mouse
             const pickerCont = document.getElementById('emoji-picker-container');
@@ -2104,11 +2335,45 @@
                 
                 if (storedSettings) {
                     state.settings = JSON.parse(storedSettings);
-                    // Automatic migration: if store name was the previous default, update it to AK Vegetables
+                    
+                    let settingsMigrated = false;
+                    // Migrate legacy settings to include login properties
+                    if (state.settings.loginEnabled === undefined) {
+                        state.settings.loginEnabled = true;
+                        settingsMigrated = true;
+                    }
+                    if (state.settings.staffPin === undefined) {
+                        state.settings.staffPin = "5555";
+                        settingsMigrated = true;
+                    }
+                    if (state.settings.adminPin === undefined) {
+                        state.settings.adminPin = "1234";
+                        settingsMigrated = true;
+                    }
+                    if (state.settings.adminPinEnabled === undefined) {
+                        state.settings.adminPinEnabled = true;
+                        settingsMigrated = true;
+                    }
                     if (state.settings.storeName === "Fresh Organic Veggies" || state.settings.storeName === "Fresh Organic Veggies") {
                         state.settings.storeName = "AK Vegetables";
+                        settingsMigrated = true;
+                    }
+                    if (settingsMigrated) {
                         saveSettings();
                     }
+                } else {
+                    // Seed settings if empty
+                    state.settings = {
+                        storeName: "AK Vegetables",
+                        address: "Market Junction, MG Road, Kerala",
+                        phone: "9876543210",
+                        taxPercent: 0,
+                        loginEnabled: true,
+                        staffPin: "5555",
+                        adminPinEnabled: true,
+                        adminPin: "1234"
+                    };
+                    saveSettings();
                 } else {
                     state.settings = {
                         storeName: "AK Vegetables",
@@ -2150,6 +2415,131 @@
             document.getElementById('receipt-print-address').textContent = state.settings.address;
             document.getElementById('receipt-print-phone').textContent = `Phone: ${state.settings.phone}`;
             lucide.createIcons();
+        }
+
+        // --- APP STARTUP LOGIN SCREEN GATE ---
+        let loginSession = {
+            isLoggedIn: false,
+            role: 'staff',
+            pinBuffer: ''
+        };
+
+        function setLoginRole(role) {
+            loginSession.role = role;
+            loginSession.pinBuffer = '';
+            updateLoginPinDots();
+            document.getElementById('login-error-msg').style.opacity = '0';
+            
+            // Toggle active classes on role tabs
+            document.getElementById('login-role-staff').classList.toggle('active', role === 'staff');
+            document.getElementById('login-role-owner').classList.toggle('active', role === 'owner');
+        }
+
+        function inputLoginPin(num) {
+            if (loginSession.pinBuffer.length >= 4) return;
+            loginSession.pinBuffer += num;
+            updateLoginPinDots();
+            
+            if (loginSession.pinBuffer.length === 4) {
+                // Auto-verify on 4 digits
+                verifyLoginPin();
+            }
+        }
+
+        function clearLoginPin() {
+            loginSession.pinBuffer = '';
+            updateLoginPinDots();
+            document.getElementById('login-error-msg').style.opacity = '0';
+        }
+
+        function updateLoginPinDots() {
+            const dotsContainer = document.getElementById('login-pin-dots');
+            if (!dotsContainer) return;
+            const dots = dotsContainer.querySelectorAll('div');
+            dots.forEach((dot, idx) => {
+                if (idx < loginSession.pinBuffer.length) {
+                    dot.classList.add('filled');
+                } else {
+                    dot.classList.remove('filled');
+                }
+            });
+        }
+
+        function verifyLoginPin() {
+            const correctAdminPin = state.settings.adminPin || "1234";
+            const correctStaffPin = state.settings.staffPin || "5555";
+            const enteredPin = loginSession.pinBuffer;
+
+            if (loginSession.role === 'owner') {
+                if (enteredPin === correctAdminPin) {
+                    // Owner login successful
+                    loginSession.isLoggedIn = true;
+                    session.isAdminAuthenticated = true;
+                    showToast("Logged in as Owner");
+                    unlockAppWorkspace();
+                } else {
+                    triggerLoginError();
+                }
+            } else {
+                if (enteredPin === correctStaffPin) {
+                    // Staff login successful
+                    loginSession.isLoggedIn = true;
+                    session.isAdminAuthenticated = false; // restricted tabs locked
+                    showToast("Logged in as Staff");
+                    unlockAppWorkspace();
+                } else {
+                    triggerLoginError();
+                }
+            }
+        }
+
+        function triggerLoginError() {
+            const errorMsg = document.getElementById('login-error-msg');
+            errorMsg.textContent = "Incorrect PIN!";
+            errorMsg.style.opacity = '1';
+            
+            const container = document.querySelector('.login-container');
+            if (container) {
+                container.style.animation = 'shake 0.3s ease-in-out';
+                setTimeout(() => { container.style.animation = ''; }, 300);
+            }
+            
+            loginSession.pinBuffer = '';
+            updateLoginPinDots();
+        }
+
+        function unlockAppWorkspace() {
+            document.getElementById('app-login-screen').classList.remove('active');
+            updateAdminSessionButton();
+            // Default to billing tab on fresh login
+            switchScreen('billing');
+        }
+
+        function logOutApp() {
+            if (confirm("Are you sure you want to lock the app screen?")) {
+                loginSession.isLoggedIn = false;
+                loginSession.pinBuffer = '';
+                session.isAdminAuthenticated = false;
+                
+                // Reset role tab back to staff
+                setLoginRole('staff');
+                
+                document.getElementById('app-login-screen').classList.add('active');
+                updateAdminSessionButton();
+                showToast("Application session locked.");
+            }
+        }
+
+        function checkAppLoginState() {
+            const isLoginEnabled = state.settings.loginEnabled !== false;
+            const loginOverlay = document.getElementById('app-login-screen');
+            
+            if (isLoginEnabled && !loginSession.isLoggedIn) {
+                loginOverlay.classList.add('active');
+            } else {
+                loginOverlay.classList.remove('active');
+                loginSession.isLoggedIn = true;
+            }
         }
 
         // --- ADMIN LOGIN SESSION MANAGER ---
@@ -3261,6 +3651,13 @@
             document.getElementById('setting-store-phone').value = state.settings.phone;
             document.getElementById('setting-tax-percent').value = state.settings.taxPercent || 0;
 
+            // Startup Login settings
+            const loginEnabled = state.settings.loginEnabled !== false; // default true
+            document.getElementById('setting-login-enabled').checked = loginEnabled;
+            document.getElementById('setting-staff-pin').value = state.settings.staffPin || '5555';
+            document.getElementById('setting-staff-pin-group').style.display = loginEnabled ? 'block' : 'none';
+
+            // Admin Lock settings
             const lockEnabled = state.settings.adminPinEnabled || false;
             document.getElementById('setting-admin-lock-enabled').checked = lockEnabled;
             document.getElementById('setting-admin-pin').value = state.settings.adminPin || '1234';
@@ -3273,11 +3670,21 @@
             const ph = document.getElementById('setting-store-phone').value.trim();
             const tax = parseFloat(document.getElementById('setting-tax-percent').value) || 0;
 
+            // Startup Login
+            const loginEnabled = document.getElementById('setting-login-enabled').checked;
+            const staffPin = document.getElementById('setting-staff-pin').value.trim();
+
+            // Admin Lock
             const lockEnabled = document.getElementById('setting-admin-lock-enabled').checked;
             const pin = document.getElementById('setting-admin-pin').value.trim();
 
             if (!name) {
                 showToast("Store name is required", "warning");
+                return;
+            }
+
+            if (loginEnabled && (!/^\d{4}$/.test(staffPin))) {
+                showToast("Staff PIN must be a 4-digit number (e.g. 5555)", "warning");
                 return;
             }
 
@@ -3291,6 +3698,8 @@
                 address: addr,
                 phone: ph,
                 taxPercent: tax,
+                loginEnabled: loginEnabled,
+                staffPin: staffPin,
                 adminPinEnabled: lockEnabled,
                 adminPin: pin
             };
@@ -3298,7 +3707,8 @@
             saveSettings();
             updateHeaderBadges();
             updateAdminSessionButton();
-            showToast("Store profile updated successfully!");
+            checkAppLoginState(); // refresh login state in session
+            showToast("Settings saved successfully!");
         }
 
         // Backup Export Database (.json)
@@ -3521,6 +3931,13 @@
             document.getElementById('import-file-input').addEventListener('change', importDatabase);
             document.getElementById('clear-database-btn').addEventListener('click', wipeDatabase);
             document.getElementById('seed-demo-data-btn').addEventListener('click', seedDemoProductDataset);
+
+            // Login Settings toggles
+            document.getElementById('setting-login-enabled').addEventListener('change', (e) => {
+                const pinGroup = document.getElementById('setting-staff-pin-group');
+                if (e.target.checked) pinGroup.style.display = 'block';
+                else pinGroup.style.display = 'none';
+            });
 
             // Admin Lock settings toggle
             document.getElementById('setting-admin-lock-enabled').addEventListener('change', (e) => {
