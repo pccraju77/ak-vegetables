@@ -1124,6 +1124,24 @@
             .header-date-badge {
                 display: none;
             }
+            .header-shop-name {
+                display: none !important;
+            }
+            .header-meta {
+                gap: 8px !important;
+            }
+            .btn-text {
+                display: none !important;
+            }
+            .header-meta .btn {
+                padding: 8px !important;
+                min-width: 36px;
+                height: 36px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: var(--radius-md) !important;
+            }
             .content-area {
                 padding: 12px;
                 padding-bottom: 80px; /* spacing for bottom nav */
@@ -1518,10 +1536,10 @@
                 </div>
                 <div class="header-meta">
                     <button class="btn btn-secondary" id="app-lock-session-btn" style="padding: 8px 12px; border-radius: var(--radius-lg); font-size: 13px; display: inline-flex; gap: 6px; align-items: center;" title="Lock Billing App" onclick="logOutApp()">
-                        <i data-lucide="log-out" style="color: var(--danger); font-size: 16px;"></i> Lock Screen
+                        <i data-lucide="log-out" style="color: var(--danger); font-size: 16px;"></i> <span class="btn-text">Lock Screen</span>
                     </button>
-                    <button class="btn btn-secondary" id="admin-lock-session-btn" style="padding: 8px 12px; border-radius: var(--radius-lg); font-size: 13px; display: none;" title="Lock Admin Panels">
-                        <i data-lucide="unlock" style="color: var(--primary); font-size: 16px;"></i> Admin Unlocked
+                    <button class="btn btn-secondary" id="admin-lock-session-btn" style="padding: 8px 12px; border-radius: var(--radius-lg); font-size: 13px; display: none; gap: 6px; align-items: center;" title="Lock Admin Panels">
+                        <i data-lucide="unlock" style="color: var(--primary); font-size: 16px;"></i> <span class="btn-text">Admin Unlocked</span>
                     </button>
                     <div class="header-date-badge">
                         <i data-lucide="calendar"></i>
