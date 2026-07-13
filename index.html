@@ -304,6 +304,15 @@
             40%, 80% { transform: translateX(8px); }
         }
 
+        @keyframes badgeBounce {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.4); }
+            100% { transform: scale(1); }
+        }
+        .badge-bounce {
+            animation: badgeBounce 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
         /* Common Elements & Styling System */
         .card {
             background-color: var(--bg-card);
@@ -2696,6 +2705,10 @@
         // --- TOAST NOTIFICATIONS ---
         function showToast(message, type = "success") {
             const box = document.getElementById('toast-box');
+            
+            // Clear existing toasts to prevent piling up on rapid clicks
+            box.innerHTML = '';
+            
             const toast = document.createElement('div');
             toast.className = `toast ${type === 'danger' ? 'toast-danger' : type === 'warning' ? 'toast-warning' : ''}`;
             
@@ -2707,10 +2720,11 @@
             box.appendChild(toast);
             lucide.createIcons();
 
+            // Reduced duration to 1.2s so notifications disappear quickly, maintaining rapid checkout speed
             setTimeout(() => {
                 toast.style.animation = 'fadeOut 0.25s forwards';
                 setTimeout(() => toast.remove(), 250);
-            }, 3000);
+            }, 1200);
         }
 
         // --- MODAL UTILS ---
@@ -2970,9 +2984,17 @@
             const totalItems = state.cart.reduce((sum, item) => sum + item.qty, 0);
             const badge = document.getElementById('mobile-cart-badge');
             if (badge) {
+                const oldVal = badge.textContent;
                 if (totalItems > 0) {
                     badge.textContent = totalItems;
                     badge.style.display = 'inline-block';
+                    
+                    // Trigger badge scale bounce animation if count changed
+                    if (oldVal !== String(totalItems)) {
+                        badge.classList.remove('badge-bounce');
+                        void badge.offsetWidth; // trigger reflow
+                        badge.classList.add('badge-bounce');
+                    }
                 } else {
                     badge.style.display = 'none';
                 }
