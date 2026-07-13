@@ -1133,7 +1133,7 @@
             .header-date-badge {
                 display: none;
             }
-            .header-shop-name {
+            .header-shop-name, .header-operator-badge {
                 display: none !important;
             }
             .header-meta {
@@ -1550,6 +1550,10 @@
                     <button class="btn btn-secondary" id="admin-lock-session-btn" style="padding: 8px 12px; border-radius: var(--radius-lg); font-size: 13px; display: none; gap: 6px; align-items: center;" title="Lock Admin Panels">
                         <i data-lucide="unlock" style="color: var(--primary); font-size: 16px;"></i> <span class="btn-text">Admin Unlocked</span>
                     </button>
+                    <div class="header-operator-badge" id="header-operator-badge" style="background-color: var(--bg-main); padding: 8px 14px; border-radius: var(--radius-lg); font-size: 13px; font-weight: 700; color: var(--text-muted); display: flex; align-items: center; gap: 6px; border: 1px solid var(--border);" title="Active Billing User">
+                        <i data-lucide="user" style="color: var(--primary); font-size: 14px;"></i>
+                        <span id="header-operator-name">Staff</span>
+                    </div>
                     <div class="header-date-badge">
                         <i data-lucide="calendar"></i>
                         <span id="current-date">July 13, 2026</span>
@@ -1655,6 +1659,10 @@
 
                             <!-- Customer details and credit mode tracker -->
                             <div class="cart-customer-section">
+                                <div style="margin-bottom: 12px;">
+                                    <label for="cart-employee-name" style="font-size: 11px; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 4px;">Billed By (Employee Name)</label>
+                                    <input type="text" id="cart-employee-name" class="form-control" placeholder="Employee Name (e.g. Raju)" style="font-size: 12px; padding: 8px;" value="Staff">
+                                </div>
                                 <div class="cart-customer-inputs">
                                     <input type="text" id="cart-customer-name" class="form-control" placeholder="Customer Name" style="font-size: 12px; padding: 8px;">
                                     <input type="text" id="cart-customer-phone" class="form-control" placeholder="Phone Number" style="font-size: 12px; padding: 8px;">
@@ -2526,9 +2534,26 @@
             updateLoginPinDots();
         }
 
+        function updateOperatorBadge() {
+            const badge = document.getElementById('header-operator-badge');
+            const nameSpan = document.getElementById('header-operator-name');
+            if (badge && nameSpan) {
+                const role = loginSession.role || 'staff';
+                nameSpan.textContent = role.charAt(0).toUpperCase() + role.slice(1);
+            }
+        }
+
         function unlockAppWorkspace() {
             document.getElementById('app-login-screen').classList.remove('active');
             updateAdminSessionButton();
+            updateOperatorBadge();
+            
+            // Set operator badge and cart employee field default on login
+            const empInput = document.getElementById('cart-employee-name');
+            if (empInput) {
+                empInput.value = loginSession.role === 'owner' ? 'Owner' : 'Staff';
+            }
+            
             // Default to billing tab on fresh login
             switchScreen('billing');
         }
@@ -2541,6 +2566,7 @@
                 
                 // Reset role tab back to staff
                 setLoginRole('staff');
+                updateOperatorBadge();
                 
                 document.getElementById('app-login-screen').classList.add('active');
                 updateAdminSessionButton();
@@ -2558,6 +2584,7 @@
                 loginOverlay.classList.remove('active');
                 loginSession.isLoggedIn = true;
             }
+            updateOperatorBadge();
         }
 
         // --- ADMIN LOGIN SESSION MANAGER ---
@@ -3038,6 +3065,8 @@
             const billNo = "BILL-" + Date.now().toString().slice(-6);
             const dateStr = new Date().toISOString();
 
+            const employeeName = document.getElementById('cart-employee-name') ? document.getElementById('cart-employee-name').value.trim() : 'Staff';
+
             const bill = {
                 id: Date.now().toString(),
                 billNo: billNo,
@@ -3052,7 +3081,7 @@
                 paymentMode: paymentMode,
                 customerName: customerName || null,
                 customerPhone: customerPhone || null,
-                operator: loginSession.role
+                operator: employeeName || 'Staff'
             };
 
             // Save to bills ledger
@@ -3061,10 +3090,10 @@
 
             // Khata account updating
             if (paymentMode === 'credit') {
-                updateKhataOutstanding(customerName, customerPhone, grandTotal, bill.id, dateStr);
+                updateKhataOutstanding(customerName, customerPhone, grandTotal, bill.id, dateStr, bill.operator);
             } else if (customerName && customerPhone) {
                 // Just log a standard cash purchase for ledger context if customer info is provided
-                logCustomerCashTransaction(customerName, customerPhone, grandTotal, bill.id, dateStr);
+                logCustomerCashTransaction(customerName, customerPhone, grandTotal, bill.id, dateStr, bill.operator);
             }
 
             showToast(`Bill ${billNo} saved successfully!`);
@@ -3097,6 +3126,13 @@
             document.getElementById('cart-customer-name').value = '';
             document.getElementById('cart-customer-phone').value = '';
             document.getElementById('cart-payment-mode').value = 'cash';
+            
+            // Reset Billed By name field based on login role
+            const empInput = document.getElementById('cart-employee-name');
+            if (empInput) {
+                empInput.value = loginSession.role === 'owner' ? 'Owner' : 'Staff';
+            }
+            
             renderCart();
             
             // Reset mobile billing screen tab back to catalog
