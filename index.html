@@ -3836,9 +3836,9 @@
             // Reconstruct discount dynamically if not saved exactly
             const discount = calcSubtotal - bill.grandTotal;
             
-            document.getElementById('bill-details-subtotal').textContent = \`₹\${calcSubtotal.toFixed(2)}\`;
-            document.getElementById('bill-details-discount').textContent = \`-\₹\${Math.max(0, discount).toFixed(2)}\`;
-            document.getElementById('bill-details-grandtotal').textContent = \`₹\${bill.grandTotal.toFixed(2)}\`;
+            document.getElementById('bill-details-subtotal').textContent = `₹${calcSubtotal.toFixed(2)}`;
+            document.getElementById('bill-details-discount').textContent = `-₹${Math.max(0, discount).toFixed(2)}`;
+            document.getElementById('bill-details-grandtotal').textContent = `₹${bill.grandTotal.toFixed(2)}`;
             
             openModal('bill-details-modal');
         }
