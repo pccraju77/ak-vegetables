@@ -1839,6 +1839,28 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Recent Bills List -->
+                    <div class="card" style="margin-top: 24px;">
+                        <h3 style="font-size: 16px; margin-bottom: 16px;">Bills List (Selected Period)</h3>
+                        <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
+                            <table class="custom-table">
+                                <thead>
+                                    <tr>
+                                        <th>Bill No.</th>
+                                        <th>Date & Time</th>
+                                        <th>Customer</th>
+                                        <th>Pay Mode</th>
+                                        <th style="text-align: right;">Amount (₹)</th>
+                                        <th style="text-align: right;">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="report-recent-bills-tbody">
+                                    <!-- Populated dynamically by JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </section>
 
                 <!-- ================== SETTINGS SCREEN ================== -->
@@ -2082,6 +2104,55 @@
         </div>
     </div>
 
+    <!-- Bill Details Modal -->
+    <div class="modal-overlay" id="bill-details-modal">
+        <div class="modal-container" style="max-width: 500px;">
+            <div class="modal-header">
+                <div>
+                    <h3 id="bill-details-no">Bill Details</h3>
+                    <span id="bill-details-date" style="font-size: 13px; color: var(--text-muted);"></span>
+                </div>
+                <button class="close-btn" onclick="closeModal('bill-details-modal')">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 13px;">
+                    <div><strong>Customer:</strong> <span id="bill-details-cust">-</span></div>
+                    <div><strong>Payment:</strong> <span id="bill-details-paymode" class="badge badge-info">-</span></div>
+                </div>
+                <div class="table-responsive" style="max-height: 250px; overflow-y: auto;">
+                    <table class="custom-table" style="font-size: 13px;">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th style="text-align: right;">Qty</th>
+                                <th style="text-align: right;">Price</th>
+                                <th style="text-align: right;">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bill-details-items-tbody">
+                        </tbody>
+                    </table>
+                </div>
+                <div style="margin-top: 16px; border-top: 1px dashed var(--border); padding-top: 12px;">
+                    <div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 4px;">
+                        <span>Subtotal</span>
+                        <span id="bill-details-subtotal">₹0.00</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 4px; color: var(--danger);">
+                        <span>Discount</span>
+                        <span id="bill-details-discount">-₹0.00</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-size: 16px; font-weight: 800; margin-top: 8px; border-top: 1px solid var(--border); padding-top: 8px;">
+                        <span>Grand Total</span>
+                        <span id="bill-details-grandtotal" style="color: var(--primary-dark);">₹0.00</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Admin PIN Lock Overlay -->
     <div class="modal-overlay" id="admin-lock-overlay" style="z-index: 400; background-color: rgba(15, 23, 42, 0.85); backdrop-filter: blur(12px);">
         <div class="modal-container" style="max-width: 340px; border-radius: var(--radius-xl); text-align: center; padding: 24px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);">
@@ -2196,7 +2267,7 @@
             { id: "6", name: "Ginger", localName: "ഇഞ്ചി (Inchi)", category: "Root", unit: "kg", price: 120, emoji: "🥜" },
             { id: "7", name: "Garlic", localName: "വെളുത്തുള്ളി (Veluthulli)", category: "Spices", unit: "kg", price: 160, emoji: "🧄" },
             { id: "8", name: "Green Chili", localName: "പച്ചമുളക് (Pachamulag)", category: "Spices", unit: "kg", price: 80, emoji: "🌶️" },
-            { id: "9", name: "Coriander Bundle", localName: "മല്ലിയില (Malliyila)", category: "Leafy", unit: "bundle", price: 15, emoji: "🌿" },
+            { id: "9", name: "Coriander Bundle", localName: "മല്ലിയില (Malliyila)", category: "Leafy", unit: "bundle", price: 15, emoji: "🫛" },
             { id: "10", name: "Ladies Finger / Okra", localName: "വെണ്ടയ്ക്ക (Vendakka)", category: "Fruits", unit: "kg", price: 45, emoji: "🎋" },
             { id: "11", name: "Brinjal", localName: "വഴുതനങ്ങ (Vazhuthananga)", category: "Fruits", unit: "kg", price: 40, emoji: "🍆" },
             { id: "12", name: "Lemon", localName: "ചെറുനാരങ്ങ (Cherunaranga)", category: "Fruits", unit: "piece", price: 5, emoji: "🍋" },
@@ -2206,14 +2277,72 @@
             { id: "16", name: "Cauliflower", localName: "കോളിഫ്ലവർ (Cauliflower)", category: "Leafy", unit: "piece", price: 40, emoji: "🥦" },
             { id: "17", name: "Curry Leaves Bundle", localName: "കറിവേപ്പില (Kariveppila)", category: "Leafy", unit: "bundle", price: 5, emoji: "🌿" },
             { id: "18", name: "Mint Leaves Bundle", localName: "പുതിനയില (Puthinayila)", category: "Leafy", unit: "bundle", price: 10, emoji: "🌱" },
-            { id: "19", name: "Tapioca", localName: "കപ്പ (Kappa)", category: "Root", unit: "kg", price: 32, emoji: "🍠" },
+            { id: "19", name: "Tapioca", localName: "കപ്പ (Kappa)", category: "Root", unit: "kg", price: 32, emoji: "🪵" },
             { id: "20", name: "Pumpkin", localName: "മത്തങ്ങ (Mathanga)", category: "Fruits", unit: "kg", price: 26, emoji: "🎃" },
-            { id: "21", name: "Beetroot", localName: "ബീറ്റ്റൂട്ട് (Beetroot)", category: "Root", unit: "kg", price: 45, emoji: "🍒" },
+            { id: "21", name: "Beetroot", localName: "ബീറ്റ്റൂട്ട് (Beetroot)", category: "Root", unit: "kg", price: 45, emoji: "🟣" },
             { id: "22", name: "Mushroom", localName: "കൂൺ (Koon)", category: "Other", unit: "piece", price: 45, emoji: "🍄" }
         ];
 
         // --- EMOJI PICKER UTILS ---
-        const QUICK_EMOJIS = ['🍅', '🧅', '🥔', '🥕', '🥬', '🍠', '🧄', '🌶️', '🌿', '🥒', '🍆', '🍋', '🥥', '🥦', '🌽', '🍄', '🎃', '🍎', '🍇', '🍉'];
+        const QUICK_EMOJIS = [
+            '🟣', // Beetroot (SVG)
+            '🍅', // Tomato
+            '🧅', // Onion
+            '🥔', // Potato
+            '🥕', // Carrot
+            '🥬', // Leafy Greens
+            '🫑', // Bell Pepper / Capsicum
+            '🌽', // Sweet Corn
+            '🍠', // Sweet Potato / Yam
+            '🧄', // Garlic
+            '🌶️', // Red Chili
+            '🌿', // Herb / Curry Leaves
+            '🫛', // Pea Pod / Coriander
+            '🥒', // Cucumber
+            '🍆', // Brinjal / Eggplant
+            '🍋', // Lemon
+            '🥥', // Coconut
+            '🥦', // Broccoli / Cauliflower
+            '🍄', // Mushroom
+            '🎃', // Pumpkin
+            '🥑', // Avocado
+            '🥜', // Groundnut / Peanut
+            '🌰', // Chestnut
+            '🌾', // Grain / Wheat
+            '🍈', // Melon / Bitter Gourd
+            '🎋', // Bamboo / Okra
+            '🌱', // Seedling / Mint
+            '🍎', // Apple
+            '🍇', // Grapes
+            '🍉', // Watermelon
+            '🍊', // Orange
+            '🍓', // Strawberry
+            '🍌', // Banana
+            '🥭', // Mango
+        ];
+
+        // Returns an inline SVG beetroot icon for 🟣, otherwise returns the emoji string unchanged
+        function getEmojiDisplay(emoji) {
+            if (emoji === '🟣') {
+                return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" width="34" height="34" style="display:block; flex-shrink:0;">
+                  <!-- Center stem -->
+                  <line x1="20" y1="14" x2="20" y2="7" stroke="#15803d" stroke-width="2" stroke-linecap="round"/>
+                  <!-- Left leaf -->
+                  <path d="M20 11 C18 6 10 5 10 9 C13 10 17 10 20 11Z" fill="#22c55e"/>
+                  <!-- Right leaf -->
+                  <path d="M20 11 C22 6 30 5 30 9 C27 10 23 10 20 11Z" fill="#16a34a"/>
+                  <!-- Beetroot body shadow -->
+                  <circle cx="20" cy="27" r="12" fill="#881337"/>
+                  <!-- Beetroot body main -->
+                  <circle cx="20" cy="25.5" r="11.5" fill="#be123c"/>
+                  <!-- Highlight shine -->
+                  <ellipse cx="15.5" cy="21" rx="4" ry="3" fill="#fb7185" opacity="0.45"/>
+                  <!-- Taproot -->
+                  <path d="M20 37 Q19.5 39 20 40" stroke="#881337" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+                </svg>`;
+            }
+            return emoji;
+        }
 
         function initEmojiPicker() {
             const container = document.getElementById('emoji-picker-container');
@@ -2224,7 +2353,20 @@
                 btn.style.fontSize = '20px';
                 btn.style.padding = '4px';
                 btn.style.borderRadius = '4px';
-                btn.textContent = emoji;
+                btn.style.display = 'inline-flex';
+                btn.style.alignItems = 'center';
+                btn.style.justifyContent = 'center';
+                btn.style.transition = 'background 0.15s';
+                btn.addEventListener('mouseover', () => btn.style.background = '#f1f5f9');
+                btn.addEventListener('mouseout', () => btn.style.background = '');
+                if (emoji === '🟣') {
+                    // Render SVG beetroot in the picker
+                    btn.innerHTML = getEmojiDisplay(emoji);
+                    btn.title = 'Beetroot';
+                    btn.style.fontSize = '0';
+                } else {
+                    btn.textContent = emoji;
+                }
                 btn.addEventListener('click', () => {
                     document.getElementById('product-emoji').value = emoji;
                 });
@@ -2276,7 +2418,8 @@
             if (lowerName.includes("pumpkin")) return "🎃";
             if (lowerName.includes("cauliflower")) return "🥦";
             if (lowerName.includes("bitter gourd")) return "🍈";
-            if (lowerName.includes("beetroot")) return "🍒";
+            if (lowerName.includes("beetroot")) return "🍠";
+            if (lowerName.includes("tapioca")) return "🪵";
             if (lowerName.includes("mushroom")) return "🍄";
             if (lowerName.includes("cucumber")) return "🥒";
             
@@ -2339,9 +2482,14 @@
                             p.emoji = "🥜";
                             migrated = true;
                         }
-                        // Fix Beetroot
-                        if (nameLower.includes("beetroot") && p.emoji === "🍠") {
-                            p.emoji = "🍒";
+                        // Fix Tapioca
+                        if (nameLower.includes("tapioca") && p.emoji === "🍠") {
+                            p.emoji = "🪵";
+                            migrated = true;
+                        }
+                        // Fix Beetroot — migrate any old emoji to 🟣 marker (rendered as SVG)
+                        if (nameLower.includes("beetroot") && (p.emoji === "🍠" || p.emoji === "🍒" || p.emoji === "" || p.emoji === "🔴")) {
+                            p.emoji = "🟣";
                             migrated = true;
                         }
                         // Fix Ladies Finger / Okra
@@ -2355,9 +2503,9 @@
                             migrated = true;
                         }
                         
-                        // Basic incompatible catch-all
+                        // Basic incompatible catch-all (don't touch 🟣 — it's the beetroot SVG marker)
                         if (p.emoji === "🫚") { p.emoji = "🥜"; migrated = true; }
-                        if (p.emoji === "🫛") { p.emoji = "🎋"; migrated = true; }
+                        if (p.emoji === "🫛" && !nameLower.includes("coriander")) { p.emoji = "🎋"; migrated = true; }
                     });
                     if (migrated) saveProducts();
                 } else {
@@ -2797,9 +2945,10 @@
 
                 const emoji = p.emoji || getFallbackEmoji(p.name, p.category);
                 const catClass = p.category ? `avatar-${p.category.toLowerCase()}` : 'avatar-other';
+                const emojiDisplay = getEmojiDisplay(emoji);
 
                 item.innerHTML = `
-                    <div class="product-item-avatar ${catClass}" style="font-size: 22px;">${emoji}</div>
+                    <div class="product-item-avatar ${catClass}" style="font-size: 22px; display:flex; align-items:center; justify-content:center;">${emojiDisplay}</div>
                     <div class="product-item-name">${p.name}</div>
                     <div class="product-item-local">${p.localName || ''}</div>
                     <div class="product-item-price">₹${p.price.toFixed(2)} / ${p.unit}</div>
@@ -3278,6 +3427,10 @@
                     let badgeClass = 'badge-neutral';
                     let label = 'Other';
                     let amountPrefix = '';
+                    let actionHtml = '';
+                    if (tx.billId) {
+                        actionHtml = `<button class="btn btn-secondary btn-icon" style="padding: 2px 6px; height: auto; margin-left: 6px; display: inline-flex;" onclick="viewBillDetails('${tx.billId}')" title="View Bill Details"><i data-lucide="external-link" style="width: 14px; height: 14px;"></i></button>`;
+                    }
 
                     if (tx.type === 'purchase') {
                         badgeClass = 'badge-danger';
@@ -3295,7 +3448,7 @@
 
                     row.innerHTML = `
                         <td>${new Date(tx.date).toLocaleDateString()} ${new Date(tx.date).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</td>
-                        <td><span class="badge ${badgeClass}">${label}</span></td>
+                        <td style="display: flex; align-items: center;"><span class="badge ${badgeClass}">${label}</span>${actionHtml}</td>
                         <td style="text-align: right; font-weight: 700;">${amountPrefix}₹${tx.amount.toFixed(2)}</td>
                     `;
                     historyTbody.appendChild(row);
@@ -3353,10 +3506,11 @@
             state.products.forEach(p => {
                 const tr = document.createElement('tr');
                 const emoji = p.emoji || getFallbackEmoji(p.name, p.category);
+                const emojiDisplay = getEmojiDisplay(emoji);
                 tr.innerHTML = `
                     <td>
                         <div style="display: flex; align-items: center; gap: 10px;">
-                            <span style="font-size: 20px;">${emoji}</span>
+                            <span style="font-size: 20px; display:inline-flex; align-items:center;">${emojiDisplay}</span>
                             <div>
                                 <div style="font-weight: 700;">${p.name}</div>
                                 <div style="font-size: 11px; color: var(--text-muted);">${p.localName || ''}</div>
@@ -3609,6 +3763,84 @@
 
             // Render Charts (Daily/Weekly trends for Monthly, or Category Breakdown for Daily)
             renderSalesChart(bills, dateTitleStr);
+
+            // Populate Recent Bills table
+            const billsTbody = document.getElementById('report-recent-bills-tbody');
+            if (billsTbody) {
+                billsTbody.innerHTML = '';
+                
+                if (bills.length === 0) {
+                    billsTbody.innerHTML = `
+                        <tr>
+                            <td colspan="6" style="text-align: center; color: var(--text-muted); padding: 16px;">
+                                No bills found for this period.
+                            </td>
+                        </tr>
+                    `;
+                } else {
+                    [...bills].reverse().forEach(b => {
+                        const row = document.createElement('tr');
+                        let payBadge = 'badge-info';
+                        if (b.paymentMode === 'cash') payBadge = 'badge-success';
+                        else if (b.paymentMode === 'credit') payBadge = 'badge-danger';
+                        else if (b.paymentMode === 'upi') payBadge = 'badge-warning';
+
+                        row.innerHTML = `
+                            <td style="font-family: monospace; font-weight: 600;">${b.billNo}</td>
+                            <td>${new Date(b.date).toLocaleDateString()} ${new Date(b.date).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</td>
+                            <td>${b.customerName || '-'}</td>
+                            <td><span class="badge ${payBadge}" style="text-transform: capitalize;">${b.paymentMode}</span></td>
+                            <td style="text-align: right; font-weight: 700;">₹${b.grandTotal.toFixed(2)}</td>
+                            <td style="text-align: right;">
+                                <button class="btn btn-secondary btn-icon" style="padding: 4px; height: auto;" onclick="viewBillDetails('${b.id}')" title="View Details">
+                                    <i data-lucide="eye" style="width: 16px; height: 16px;"></i>
+                                </button>
+                            </td>
+                        `;
+                        billsTbody.appendChild(row);
+                    });
+                }
+                lucide.createIcons();
+            }
+        }
+
+        function viewBillDetails(billId) {
+            const bill = state.bills.find(b => b.id === billId);
+            if (!bill) {
+                showToast("Bill details not found", "danger");
+                return;
+            }
+
+            document.getElementById('bill-details-no').textContent = bill.billNo;
+            document.getElementById('bill-details-date').textContent = new Date(bill.date).toLocaleString();
+            document.getElementById('bill-details-cust').textContent = bill.customerName || 'Walk-in';
+            document.getElementById('bill-details-paymode').textContent = bill.paymentMode.toUpperCase();
+            
+            const tbody = document.getElementById('bill-details-items-tbody');
+            tbody.innerHTML = '';
+            
+            let calcSubtotal = 0;
+            bill.items.forEach(item => {
+                const tr = document.createElement('tr');
+                const lineTotal = item.qty * item.price;
+                calcSubtotal += lineTotal;
+                tr.innerHTML = `
+                    <td>${item.name}</td>
+                    <td style="text-align: right;">${item.qty} ${item.unit}</td>
+                    <td style="text-align: right;">₹${item.price.toFixed(2)}</td>
+                    <td style="text-align: right; font-weight: 700;">₹${lineTotal.toFixed(2)}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+            
+            // Reconstruct discount dynamically if not saved exactly
+            const discount = calcSubtotal - bill.grandTotal;
+            
+            document.getElementById('bill-details-subtotal').textContent = \`₹\${calcSubtotal.toFixed(2)}\`;
+            document.getElementById('bill-details-discount').textContent = \`-\₹\${Math.max(0, discount).toFixed(2)}\`;
+            document.getElementById('bill-details-grandtotal').textContent = \`₹\${bill.grandTotal.toFixed(2)}\`;
+            
+            openModal('bill-details-modal');
         }
 
         function renderSalesChart(bills, dateTitleStr) {
