@@ -3517,6 +3517,7 @@
                 document.querySelector('.billing-cart').style.display = 'block';
                 document.getElementById('mobile-toggle-cart-btn').classList.replace('btn-secondary', 'btn-primary');
                 document.getElementById('mobile-toggle-catalog-btn').classList.replace('btn-primary', 'btn-secondary');
+                renderCart();
             };
 
             document.getElementById('mobile-toggle-catalog-btn').addEventListener('click', showMobileCatalog);
