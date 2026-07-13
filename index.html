@@ -2632,7 +2632,10 @@
                 // We print using native browser window.print() after minor CSS modifications
                 setTimeout(() => {
                     window.print();
-                    resetCartForm();
+                    // Delay clearing the cart on mobile/async browsers so they don't capture a blank page
+                    setTimeout(() => {
+                        resetCartForm();
+                    }, 1500);
                 }, 100);
             } else {
                 resetCartForm();
